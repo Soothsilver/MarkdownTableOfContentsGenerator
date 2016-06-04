@@ -8,6 +8,7 @@
         function generate() {
             var markdown = $("#markdownText").val().split('\n');
             var result = "";
+            var minimumIndent = 1000;
             for (var i = 0; i < markdown.length; i++) {
                 var line = markdown[i];
                 if (line[0] != '#') {
@@ -18,6 +19,7 @@
                 var link = title.toLowerCase().replace(/ /g, "-");
                 var resultLine = "";
                 var count = (line.match(/#/g) || []).length;
+                if (count < minimumIndent) minimumIndent = count;
                 for (var j = 0; j < count; j++) {
                     resultLine += "  ";
                 }
@@ -25,7 +27,12 @@
                 resultLine += "\n";
                 result += resultLine;
             }
-            $("#markdownToC").val(result);
+            var toc = result.split('\n');
+            for (i = 0; i < toc.length; i++) {
+                toc[i] = toc[i].substr(minimumIndent * 2);
+            }
+            $("#markdownToC").val(
+                    toc.join("\n"));
 
 
         }
