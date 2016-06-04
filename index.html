@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Markdown Table of Contents Generator</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <script>
+        function generate() {
+            var markdown = $("#markdownText").val().split('\n');
+            var result = "";
+            for (var i = 0; i < markdown.length; i++) {
+                var line = markdown[i];
+                if (line[0] != '#') {
+                    continue;
+                }
+                line = line.trim();
+                var title = line.replace(/#/g, "").trim();
+                var link = title.toLowerCase().replace(/ /g, "-");
+                var resultLine = "";
+                var count = (line.match(/#/g) || []).length;
+                for (var j = 0; j < count; j++) {
+                    resultLine += "  ";
+                }
+                resultLine += "* [" + title + "](#" + link + ")";
+                resultLine += "\n";
+                result += resultLine;
+            }
+            $("#markdownToC").val(result);
+
+
+        }
+    </script>
+</head>
+<body style="background-color: #dad1ff;">
+<div align="center">
+    <br>Markdown text:<br><br>
+<textarea id="markdownText" style="width: 80%; height: 500px;">
+</textarea>
+    <br>
+    <br><button style="width: 80%; height: 50px;" onclick="generate();">Generate Table of Contents</button>
+    <br>
+    <br>
+    Your table of contents:
+    <br>
+    <br>
+
+<textarea id="markdownToC" style="width: 80%; height: 300px;">
+</textarea>
+</div>
+</body>
+</html>
